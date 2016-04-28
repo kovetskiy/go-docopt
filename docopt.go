@@ -209,13 +209,13 @@ func parseArgv(tokens *tokenList, options *patternList, optionsFirst bool) (patt
 				parsed = append(parsed, newArgument("", v))
 			}
 			return parsed, nil
-		} else if tokens.current().hasPrefix("--") {
+		} else if tokens.current().hasPrefix("--") && !tokens.current().hasPrefix("---") {
 			pl, err := parseLong(tokens, options)
 			if err != nil {
 				return nil, err
 			}
 			parsed = append(parsed, pl...)
-		} else if tokens.current().hasPrefix("-") && !tokens.current().eq("-") {
+		} else if tokens.current().hasPrefix("-") && !tokens.current().hasPrefix("---") && !tokens.current().eq("-") {
 			ps, err := parseShorts(tokens, options)
 			if err != nil {
 				return nil, err
