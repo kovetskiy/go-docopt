@@ -1421,12 +1421,13 @@ func TestFileTestcases(t *testing.T) {
 			result, err := Parse(c.doc, c.argv, true, "", false, false)
 			if _, ok := err.(*UserError); c.userError && !ok {
 				// expected a user-error
-				t.Error("testcase:", c.id, "result:", result)
+				t.Error("testcase:", c.id, "prog:", c.prog, "doc:", c.doc, "result:", result)
 			} else if _, ok := err.(*UserError); !c.userError && ok {
 				// unexpected user-error
-				t.Error("testcase:", c.id, "error:", err, "result:", result)
+				// expected a user-error
+				t.Error("testcase:", c.id, "prog:", c.prog, "doc:", c.doc, "error:", err, "result:", result)
 			} else if reflect.DeepEqual(c.expect, result) != true {
-				t.Error("testcase:", c.id, "result:", result, "expect:", c.expect)
+				t.Error("testcase:", c.id, "prog:", c.prog, "doc:", c.doc, "result:", result, "expect:", c.expect)
 			}
 		}
 	}
