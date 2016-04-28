@@ -7,3 +7,30 @@ $ prog 10
 
 $ prog
 {"NAME_-2": []}
+
+
+r"""
+Usage:
+    prog [options]
+
+Options:
+    -a A
+    -b B
+
+    -c C
+
+    -d D
+
+
+
+    --long <x>    Specify long x
+
+                  [default: y]
+
+
+    -e E
+
+blah blah is blah blah
+"""
+$ prog
+{"-a": null, "-b": null, "-c": null, "-d": null,  "-e": null, "--long":"y"}

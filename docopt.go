@@ -152,7 +152,19 @@ func handleError(err error, usage string) string {
 }
 
 func parseSection(name, source string) []string {
-	p := regexp.MustCompile(`(?im)^([^\n]*` + name + `[^\n]*\n?(?:[ \t].*?(?:\n|$))*)`)
+	var p *regexp.Regexp
+	if name == "usage:" {
+		p = regexp.MustCompile(
+			`(?im)^([^\n]*` + name +
+				`[^\n]*\n?(?:[ \t].*?(?:\n|$))*)`,
+		)
+	} else {
+		p = regexp.MustCompile(
+			`(?im)^([^\n]*` + name +
+				`.*(?:\n?[ \t].*?(\n|$)|\n?$)*)`,
+		)
+	}
+
 	s := p.FindAllString(source, -1)
 	if s == nil {
 		s = []string{}
