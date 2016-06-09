@@ -5,13 +5,13 @@ This is the fork of docopt-go.
 
 # Usage:
 
-```
+```go
 func Parse(
 	doc string, version string, settings ...interface{},
 ) (map[string]interface{}, error)
 ```
 
-```
+```go
 func MustParse(
     doc string, version string, settings ...interface{},
 ) map[string]interface{}
@@ -43,3 +43,29 @@ commands.
 
 `UsePager` - pass this setting if help should be displayed using pager
 (will be used `$PAGER` or `less`).
+
+### Example
+
+```go
+Parse(
+    `
+example
+
+Usage:
+    example [commands] [options]
+
+Commands:
+    -C Create something.
+    -R Remove something.
+
+Options:
+    -w Specify whatever.
+    `,
+    "1.0",
+    UsePager,
+    Usage(`
+    example -C
+    example -R -w
+    example -h
+`),
+)
