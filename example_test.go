@@ -12,7 +12,7 @@ func ExampleParse() {
   config_example -h | --help | --version`
 	// parse the command line `comfig_example tcp 127.0.0.1 --force`
 	argv := []string{"tcp", "127.0.0.1", "--force"}
-	arguments, _ := Parse(usage, argv, true, "0.1.1rc", false)
+	arguments, _ := Parse(usage, "1.0", Args(argv))
 	// sort the keys of the arguments map
 	var keys []string
 	for k := range arguments {

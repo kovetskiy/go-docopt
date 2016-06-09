@@ -12,12 +12,41 @@ or
 package godoc
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"os"
+	"os/exec"
 	"reflect"
 	"regexp"
 	"strings"
 	"unicode"
+)
+
+type (
+	// Usage can be used for handling specific usage, which should be used by
+	// godoc instead of parsing docs.
+	Usage string
+
+	// Options can be used for handling specific options, which should be used
+	// instead of parsing docs.
+	Options string
+
+	// Args instead of os.Args
+	Args []string
+)
+
+const (
+	// OptionsFirst pass this setting if options should be passed as first
+	// args.
+	OptionsFirst int = iota
+
+	// NoExit can be used if program should not exit if help/version argument
+	// passed.
+	NoExit
+
+	// UsePager instead of printing docs.
+	UsePager
 )
 
 /*
@@ -42,14 +71,24 @@ godoc exits with a return code of 1. To stop godoc from calling `os.Exit()`
 and to handle your own return codes, pass an optional last parameter of `false`
 for `exit`.
 */
-func Parse(doc string, argv []string, help bool, version string,
-	optionsFirst bool, exit ...bool) (map[string]interface{}, error) {
-	// if "false" was the (optional) last arg, don't call os.Exit()
+func Parse(
+	doc string, version string, settings ...interface{},
+) (map[string]interface{}, error) {
+	args, output, err := parse(doc, version, settings...)
+
 	exitOk := true
-	if len(exit) > 0 {
-		exitOk = exit[0]
+	usePager := false
+	for _, setting := range settings {
+		if setting == NoExit {
+			exitOk = false
+			continue
+		}
+
+		if setting == UsePager {
+			usePager = true
+			continue
+		}
 	}
-	args, output, err := parse(doc, argv, help, version, optionsFirst)
 	if _, ok := err.(*UserError); ok {
 		// the user gave us bad input
 		fmt.Fprintln(os.Stderr, output)
@@ -57,8 +96,27 @@ func Parse(doc string, argv []string, help bool, version string,
 			os.Exit(1)
 		}
 	} else if len(output) > 0 && err == nil {
-		// the user asked for help or `--version`
-		fmt.Println(output)
+		if usePager && output != version {
+			pager := os.Getenv("PAGER")
+			if pager == "" {
+				pager = "less"
+			}
+
+			cmd := exec.Command(pager)
+
+			cmd.Stdin = io.MultiReader(bytes.NewBufferString(output), os.Stdin)
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+
+			err = cmd.Run()
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "exec [%s]: %s", pager, err)
+				fmt.Println(output)
+			}
+		} else {
+			fmt.Println(output)
+		}
+
 		if exitOk {
 			os.Exit(0)
 		}
@@ -66,25 +124,80 @@ func Parse(doc string, argv []string, help bool, version string,
 	return args, err
 }
 
+func MustParse(
+	doc string,
+	version string,
+	settings ...interface{},
+) map[string]interface{} {
+	args, err := Parse(doc, version, settings...)
+	if err != nil {
+		panic(err)
+	}
+	return args
+}
+
 // parse and return a map of args, output and all errors
-func parse(doc string, argv []string, help bool, version string, optionsFirst bool) (args map[string]interface{}, output string, err error) {
+func parse(
+	doc string,
+	version string,
+	settings ...interface{},
+) (args map[string]interface{}, output string, err error) {
+	var (
+		argv           []string = nil
+		optionsFirst   bool
+		sectionUsage   string
+		sectionOptions string
+	)
+
+	for _, setting := range settings {
+		switch setting {
+		case OptionsFirst:
+			optionsFirst = true
+		case NoExit, UsePager:
+			continue
+		}
+
+		switch opt := setting.(type) {
+		case Usage:
+			sectionUsage = string(opt)
+		case Options:
+			sectionOptions = string(opt)
+		case Args:
+			argv = opt
+		default:
+			err = newLanguageError("unexpected setting %#v", setting)
+			return
+		}
+	}
 	if argv == nil && len(os.Args) > 1 {
 		argv = os.Args[1:]
 	}
 
-	usageSections := parseSection("usage:", doc)
+	var parsedUsage []string
+	if sectionUsage != "" {
+		parsedUsage = parseSection("usage:", "usage:\n"+sectionUsage)
+	} else {
+		parsedUsage = parseSection("usage:", doc)
+	}
 
-	if len(usageSections) == 0 {
+	if len(parsedUsage) == 0 {
 		err = newLanguageError("\"usage:\" (case-insensitive) not found.")
 		return
 	}
-	if len(usageSections) > 1 {
+	if len(parsedUsage) > 1 {
 		err = newLanguageError("More than one \"usage:\" (case-insensitive).")
 		return
 	}
-	usage := usageSections[0]
 
-	options := parseDefaults(doc)
+	usage := parsedUsage[0]
+
+	var options patternList
+	if sectionOptions != "" {
+		options = parseDefaults("options:\n" + sectionOptions)
+	} else {
+		options = parseDefaults(doc)
+	}
+
 	formal, err := formalUsage(usage)
 	if err != nil {
 		output = handleError(err, usage)
@@ -119,7 +232,7 @@ func parse(doc string, argv []string, help bool, version string, optionsFirst bo
 		optionsShortcut.children = docOptions.unique().diff(patternOptions)
 	}
 
-	if output = extras(help, version, patternArgv, doc); len(output) > 0 {
+	if output = extras(true, version, patternArgv, doc); len(output) > 0 {
 		return
 	}
 
