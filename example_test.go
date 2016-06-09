@@ -1,4 +1,4 @@
-package docopt
+package godoc
 
 import (
 	"fmt"

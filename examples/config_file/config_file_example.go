@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/docopt/docopt-go"
+	"github.com/godoc/godoc"
 	"strings"
 )
 
@@ -65,7 +65,7 @@ func main() {
 
 	jsonConfig := loadJSONConfig()
 	iniConfig := loadIniConfig()
-	arguments, _ := docopt.Parse(usage, nil, true, "0.1.1rc", false)
+	arguments, _ := godoc.Parse(usage, nil, true, "0.1.1rc", false)
 
 	// Arguments take priority over INI, INI takes priority over JSON
 	result := merge(arguments, merge(iniConfig, jsonConfig))

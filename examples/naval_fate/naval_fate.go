@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/docopt/docopt-go"
+	"github.com/godoc/godoc"
 )
 
 func main() {
@@ -23,6 +23,6 @@ Options:
   --moored      Moored (anchored) mine.
   --drifting    Drifting mine.`
 
-	arguments, _ := docopt.Parse(usage, nil, true, "Naval Fate 2.0", false)
+	arguments, _ := godoc.Parse(usage, nil, true, "Naval Fate 2.0", false)
 	fmt.Println(arguments)
 }

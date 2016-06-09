@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/docopt/docopt-go"
+	"github.com/godoc/godoc"
 )
 
 func main() {
 	usage := `usage: foo [-x] [-y]`
 
-	arguments, err := docopt.Parse(usage, nil, true, "", false)
+	arguments, err := godoc.Parse(usage, nil, true, "", false)
 	if err != nil {
 		fmt.Println(err)
 	}

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/docopt/docopt-go"
+	"github.com/godoc/godoc"
 )
 
 func main() {
@@ -17,6 +17,6 @@ Try: counted_example -vvvvvvvvvv
      counted_example --path ./here --path ./there
      counted_example this.txt that.txt`
 
-	arguments, _ := docopt.Parse(usage, nil, true, "", false)
+	arguments, _ := godoc.Parse(usage, nil, true, "", false)
 	fmt.Println(arguments)
 }

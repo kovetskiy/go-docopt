@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/docopt/docopt-go"
+	"github.com/godoc/godoc"
 )
 
 func main() {
@@ -11,6 +11,6 @@ func main() {
   quick_example serial <port> [--baud=9600] [--timeout=<seconds>]
   quick_example -h | --help | --version`
 
-	arguments, _ := docopt.Parse(usage, nil, true, "0.1.1rc", false)
+	arguments, _ := godoc.Parse(usage, nil, true, "0.1.1rc", false)
 	fmt.Println(arguments)
 }

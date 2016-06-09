@@ -1,11 +1,11 @@
 /*
-Based of off docopt.py: https://github.com/docopt/docopt
+Based of off godoc.py: https://github.com/godoc/godoc
 
 Licensed under terms of MIT license (see LICENSE-MIT)
 Copyright (c) 2013 Keith Batten, kbatten@gmail.com
 */
 
-package docopt
+package godoc
 
 import (
 	"bytes"

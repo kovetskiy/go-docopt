@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/docopt/docopt-go"
+	"github.com/godoc/godoc"
 )
 
 func main() {
@@ -14,6 +14,6 @@ Example, try:
 Options:
   -h, --help`
 
-	arguments, _ := docopt.Parse(usage, nil, true, "", false)
+	arguments, _ := godoc.Parse(usage, nil, true, "", false)
 	fmt.Println(arguments)
 }

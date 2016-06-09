@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/docopt/docopt-go"
+	"github.com/godoc/godoc"
 )
 
 func main() {
@@ -24,6 +24,6 @@ Options:
   --left   use left-hand side
   --right  use right-hand side`
 
-	arguments, _ := docopt.Parse(usage, nil, true, "", false)
+	arguments, _ := godoc.Parse(usage, nil, true, "", false)
 	fmt.Println(arguments)
 }
