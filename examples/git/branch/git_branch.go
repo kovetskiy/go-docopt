@@ -2,7 +2,7 @@ package git
 
 import (
 	"fmt"
-	"github.com/godoc/godoc"
+	"github.com/kovetskiy/godocs"
 )
 
 func main() {
@@ -33,6 +33,6 @@ Specific git-branch actions:
     --merged=<commit>     print only merged branches
 `
 
-	args, _ := godoc.Parse(usage, nil, true, "", false)
+	args, _ := godocs.Parse(usage, nil, true, "", false)
 	fmt.Println(args)
 }

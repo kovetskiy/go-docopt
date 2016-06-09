@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/godoc/godoc"
+	"github.com/kovetskiy/godocs"
 )
 
 func main() {
 	usage := `usage: foo [-x] [-y]`
 
-	arguments, err := godoc.Parse(usage, nil, true, "", false)
+	arguments, err := godocs.Parse(usage, nil, true, "", false)
 	if err != nil {
 		fmt.Println(err)
 	}

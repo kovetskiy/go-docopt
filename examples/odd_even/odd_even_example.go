@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/godoc/godoc"
+	"github.com/kovetskiy/godocs"
 )
 
 func main() {
@@ -14,6 +14,6 @@ Example, try:
 Options:
   -h, --help`
 
-	arguments, _ := godoc.Parse(usage, nil, true, "", false)
+	arguments, _ := godocs.Parse(usage, nil, true, "", false)
 	fmt.Println(arguments)
 }

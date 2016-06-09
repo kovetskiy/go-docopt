@@ -2,7 +2,7 @@ package git
 
 import (
 	"fmt"
-	"github.com/godoc/godoc"
+	"github.com/kovetskiy/godocs"
 )
 
 func main() {
@@ -25,6 +25,6 @@ options:
     -p, --patch           select hunks interactively
 `
 
-	args, _ := godoc.Parse(usage, nil, true, "", false)
+	args, _ := godocs.Parse(usage, nil, true, "", false)
 	fmt.Println(args)
 }

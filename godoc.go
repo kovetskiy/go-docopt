@@ -2,14 +2,14 @@
 // Copyright (c) 2013 Keith Batten, kbatten@gmail.com
 
 /*
-Package godoc parses command-line arguments based on a help message.
+Package godocs parses command-line arguments based on a help message.
 
-⚠ Use the alias “godoc”:
-	import "github.com/godoc/godoc"
+⚠ Use the alias “godocs”:
+	import "github.com/kovetskiy/godocs"
 or
-	$ go get github.com/godoc/godoc
+	$ go get github.com/kovetskiy/godocs
 */
-package godoc
+package godocs
 
 import (
 	"bytes"
@@ -25,7 +25,7 @@ import (
 
 type (
 	// Usage can be used for handling specific usage, which should be used by
-	// godoc instead of parsing docs.
+	// godocs instead of parsing docs.
 	Usage string
 
 	// Options can be used for handling specific options, which should be used
@@ -52,12 +52,12 @@ const (
 /*
 Parse `argv` based on the command-line interface described in `doc`.
 
-Given a conventional command-line help message, godoc creates a parser and
+Given a conventional command-line help message, godocs creates a parser and
 processes the arguments. See
-https://github.com/godoc/godoc#help-message-format for a description of the
+https://github.com/kovetskiy/godocs#help-message-format for a description of the
 help message format. If `argv` is `nil`, `os.Args[1:]` is used.
 
-godoc returns a map of option names to the values parsed from `argv`, and an
+godocs returns a map of option names to the values parsed from `argv`, and an
 error or `nil`.
 
 Set `help` to `false` to disable automatic help messages on `-h` or `--help`.
@@ -65,9 +65,9 @@ If `version` is a non-empty string, it will be printed when `--version` is
 specified. Set `optionsFirst` to `true` to require that options always come
 before positional arguments; otherwise they can overlap.
 
-By default, godoc calls `os.Exit(0)` if it handled a built-in option such as
+By default, godocs calls `os.Exit(0)` if it handled a built-in option such as
 `-h` or `--version`. If the user errored with a wrong command or options,
-godoc exits with a return code of 1. To stop godoc from calling `os.Exit()`
+godocs exits with a return code of 1. To stop godocs from calling `os.Exit()`
 and to handle your own return codes, pass an optional last parameter of `false`
 for `exit`.
 */

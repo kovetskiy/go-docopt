@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/godoc/godoc"
+	"github.com/kovetskiy/godocs"
 	"os"
 	"os/exec"
 )
@@ -30,7 +30,7 @@ The most commonly used git commands are:
 
 See 'git help <command>' for more information on a specific command.
 `
-	args, _ := godoc.Parse(usage, nil, true, "git version 1.7.4.4", true)
+	args, _ := godocs.Parse(usage, nil, true, "git version 1.7.4.4", true)
 
 	fmt.Println("global arguments:")
 	fmt.Println(args)
@@ -102,7 +102,7 @@ options:
 	--ignore-missing     check if - even missing - files are ignored in dry run
 `
 
-	args, _ := godoc.Parse(usage, nil, true, "", false)
+	args, _ := godocs.Parse(usage, nil, true, "", false)
 	fmt.Println(args)
 	return
 }

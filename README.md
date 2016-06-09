@@ -1,4 +1,4 @@
-godoc
+godocs
 =====
 
 This is the fork of docopt-go.

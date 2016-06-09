@@ -1,11 +1,11 @@
 /*
-Based of off godoc.py: https://github.com/godoc/godoc
+Based of off godocs.py: https://github.com/kovetskiy/godocs
 
 Licensed under terms of MIT license (see LICENSE-MIT)
 Copyright (c) 2013 Keith Batten, kbatten@gmail.com
 */
 
-package godoc
+package godocs
 
 import (
 	"bytes"

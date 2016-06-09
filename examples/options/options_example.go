@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/godoc/godoc"
+	"github.com/kovetskiy/godocs"
 )
 
 func main() {
-	usage := `Example of program with many options using godoc.
+	usage := `Example of program with many options using godocs.
 
 Usage:
   options_example [-hvqrf NAME] [--exclude=PATTERNS]
@@ -38,6 +38,6 @@ Options:
   --testsuite=DIR      run regression tests from dir
   --doctest            run doctest on myself`
 
-	arguments, _ := godoc.Parse(usage, nil, true, "1.0.0rc2", false)
+	arguments, _ := godocs.Parse(usage, nil, true, "1.0.0rc2", false)
 	fmt.Println(arguments)
 }

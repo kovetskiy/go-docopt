@@ -2,7 +2,7 @@ package git
 
 import (
 	"fmt"
-	"github.com/godoc/godoc"
+	"github.com/kovetskiy/godocs"
 )
 
 func main() {
@@ -32,6 +32,6 @@ options:
     --depth <depth>       create a shallow clone of that depth
 `
 
-	args, _ := godoc.Parse(usage, nil, true, "", false)
+	args, _ := godocs.Parse(usage, nil, true, "", false)
 	fmt.Println(args)
 }

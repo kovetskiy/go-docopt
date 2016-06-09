@@ -2,7 +2,7 @@ package git
 
 import (
 	"fmt"
-	"github.com/godoc/godoc"
+	"github.com/kovetskiy/godocs"
 )
 
 func main() {
@@ -29,6 +29,6 @@ options:
     --progress            force progress reporting
 `
 
-	args, _ := godoc.Parse(usage, nil, true, "", false)
+	args, _ := godocs.Parse(usage, nil, true, "", false)
 	fmt.Println(args)
 }
