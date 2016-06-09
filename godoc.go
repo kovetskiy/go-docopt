@@ -12,9 +12,7 @@ or
 package godocs
 
 import (
-	"bytes"
 	"fmt"
-	"io"
 	"os"
 	"os/exec"
 	"reflect"
@@ -96,24 +94,34 @@ func Parse(
 			os.Exit(1)
 		}
 	} else if len(output) > 0 && err == nil {
+		print := true
 		if usePager && output != version {
 			pager := os.Getenv("PAGER")
 			if pager == "" {
 				pager = "less"
 			}
 
-			cmd := exec.Command(pager)
+			pipeStdin, pipeStdout, err := os.Pipe()
+			if err == nil {
+				cmd := exec.Command(pager)
 
-			cmd.Stdin = io.MultiReader(bytes.NewBufferString(output), os.Stdin)
-			cmd.Stdout = os.Stdout
-			cmd.Stderr = os.Stderr
+				cmd.Stdin = pipeStdin
+				cmd.Stdout = os.Stdout
+				cmd.Stderr = os.Stderr
 
-			err = cmd.Run()
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "exec [%s]: %s", pager, err)
-				fmt.Println(output)
+				fmt.Fprint(pipeStdout, output)
+				pipeStdout.Close()
+
+				err = cmd.Run()
+				if err == nil {
+					print = false
+				}
+
+				pipeStdin.Close()
 			}
-		} else {
+		}
+
+		if print {
 			fmt.Println(output)
 		}
 
