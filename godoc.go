@@ -183,7 +183,10 @@ func parse(
 
 	var parsedUsage []string
 	if sectionUsage != "" {
-		parsedUsage = parseSection("usage:", "usage:\n"+sectionUsage)
+		parsedUsage = parseSection(
+			"usage:",
+			"usage:\n"+strings.TrimLeft(sectionUsage, "\n"),
+		)
 	} else {
 		parsedUsage = parseSection("usage:", doc)
 	}
