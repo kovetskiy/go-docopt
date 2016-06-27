@@ -184,8 +184,8 @@ func parse(
 	var parsedUsage []string
 	if sectionUsage != "" {
 		parsedUsage = parseSection(
-			"usage:",
-			"usage:\n"+strings.TrimLeft(sectionUsage, "\n"),
+			"Usage:",
+			"Usage:\n"+strings.TrimLeft(sectionUsage, "\n"),
 		)
 	} else {
 		parsedUsage = parseSection("usage:", doc)
@@ -472,7 +472,10 @@ func parseAtom(tokens *tokenList, options *patternList) (patternList, error) {
 		}
 		moved := tokens.move()
 		if !moved.eq(matching) {
-			return nil, tokens.errorFunc("unmatched '%s', expected: '%s' got: '%s'", tok, matching, moved)
+			return nil, tokens.errorFunc(
+				"unmatched '%s', expected: '%s' got: '%s' in line '%s'",
+				tok, matching, moved, strings.Join(tokens.tokens, ""),
+			)
 		}
 		return result, nil
 	} else if tok.eq("options") {
