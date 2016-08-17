@@ -98,7 +98,7 @@ func Parse(
 		if usePager && output != version {
 			pager := os.Getenv("PAGER")
 			if pager == "" {
-				pager = "less"
+				pager = "less -SX"
 			}
 
 			pipeStdin, pipeStdout, err := os.Pipe()
